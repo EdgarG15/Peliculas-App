@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/widgets.dart';
+
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({Key? key}) : super(key: key);
 
@@ -17,6 +19,8 @@ class DetailsScreen extends StatelessWidget {
               [
                 const _PosterAndTitle(),
                 const _OverView(),
+                const _OverView(),
+                const CastingCards()
               ],
             ),
           )
@@ -67,7 +71,7 @@ class _PosterAndTitle extends StatelessWidget {
               placeholder: AssetImage('assets/loading.gif'),
               image: NetworkImage('https://via.placeholder.com/200x300'),
               fit: BoxFit.cover,
-              height: 200,
+              height: 150,
             ),
           ),
           const SizedBox(
@@ -117,9 +121,10 @@ class _OverView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-      child: const Text(
+      child: Text(
         'Ullamco magna sit consequat deserunt eu consequat nulla. Laborum laboris nostrud et fugiat labore Lorem non eu ullamco excepteur consequat mollit ullamco. Et velit nisi id incididunt reprehenderit ullamco dolor cupidatat eiusmod ad mollit mollit. Consequat dolore exercitation deserunt sunt amet cupidatat do cupidatat. Pariatur aliqua aute velit magna minim exercitation id eu laboris labore dolor sit.',
         textAlign: TextAlign.justify,
+        style: Theme.of(context).textTheme.subtitle1,
       ),
     );
   }
