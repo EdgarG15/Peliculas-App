@@ -1,19 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:peliculas/models/models.dart';
-import 'package:peliculas/models/now_playing_response.dart';
-
-import '../models/movie.dart';
 
 class MoviesProvider extends ChangeNotifier {
-  String _baseUrl = 'api.themoviedb.org';
-  String _apiKey = 'd14d5618ceb69d33efa8db4f6b934a4c';
-  String _language = 'es-ES';
+  final String _baseUrl = 'api.themoviedb.org';
+  final String _apiKey = 'd14d5618ceb69d33efa8db4f6b934a4c';
+  final String _language = 'es-ES';
 
   List<Movie> onDisplayMovies = [];
   List<Movie> popularMovies = [];
+  Map<int, List<Cast>> moviesCats = {};
   int _popularPage = 0;
 
   MoviesProvider() {
@@ -60,5 +56,14 @@ class MoviesProvider extends ChangeNotifier {
 
     ///print(popularMovies[0]);
     notifyListeners();
+  }
+
+  Future<List<Cast>> getMovieCast(int movieId) async {
+    print('pidiendo info');
+    final jsonData = await _getJsonData('3/movie/$movieId/credits');
+    final creditsResponse = CreditsResponse.fromJson(jsonData);
+
+    moviesCats[movieId] = creditsResponse.cast;
+    return creditsResponse.cast;
   }
 }
