@@ -88,51 +88,52 @@ class _PosterAndTitle extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(20.0),
             child: FadeInImage(
-              placeholder: const AssetImage('assets/loading.gif'),
+              height: 200,
+              placeholder: const AssetImage('assets/no-image.jpg'),
               image: NetworkImage(movie.fullPosterImg),
-              fit: BoxFit.cover,
-              height: 150,
             ),
           ),
           const SizedBox(
-            width: 20,
+            width: 20.0,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 150),
-                child: Text(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   movie.title,
                   style: textTheme.headline5,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),
-              ),
-              Text(
-                movie.originalTitle,
-                style: textTheme.subtitle1,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.star_outline,
-                    size: 15,
-                    color: Colors.amber,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    '${movie.voteAverage}',
-                    style: textTheme.caption,
-                  )
-                ],
-              )
-            ],
-          ),
+                Text(
+                  movie.originalTitle,
+                  style: textTheme.subtitle1,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.star_border_outlined,
+                      size: 15,
+                      color: Colors.blueGrey,
+                    ),
+                    const SizedBox(
+                      width: 4.0,
+                    ),
+                    Text(
+                      '${movie.voteAverage}',
+                      style: textTheme.caption,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
