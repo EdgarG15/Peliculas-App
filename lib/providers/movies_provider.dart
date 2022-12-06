@@ -74,7 +74,7 @@ class MoviesProvider extends ChangeNotifier {
     final url = Uri.https(
       _baseUrl,
       '3/search/movie',
-      {'api_key': _apiKey, 'language': _language},
+      {'api_key': _apiKey, 'language': _language, 'query': query},
     );
     final response = await http.get(url);
     final searchResponse = SearchResponse.fromJson(response.body);
