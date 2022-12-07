@@ -1,42 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:peliculas/providers/movies_provider.dart';
+import 'package:peliculas/models/models.dart';
 import 'package:provider/provider.dart';
-
-import '../models/models.dart';
+import 'package:peliculas/providers/movies_provider.dart';
 
 class MovieSearchDelegate extends SearchDelegate {
   @override
-  String? get searchFieldLabel => 'Buscar pelicula';
+  String get searchFieldLabel => 'Buscar película';
 
   @override
-  List<Widget>? buildActions(BuildContext context) {
+  List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        onPressed: () => query = '',
         icon: const Icon(Icons.clear),
-      ),
+        onPressed: () => query = '',
+      )
     ];
   }
 
   @override
-  Widget? buildLeading(BuildContext context) {
+  Widget buildLeading(BuildContext context) {
     return IconButton(
-      onPressed: () => close(context, null),
       icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    return const Text('BuildResults');
+    return const Text('buildResults');
   }
 
   Widget _emptyContainer() {
     return const Center(
       child: Icon(
-        Icons.movie_creation,
+        Icons.movie_creation_outlined,
         color: Colors.black38,
-        size: 100,
+        size: 130,
       ),
     );
   }
@@ -48,18 +49,18 @@ class MovieSearchDelegate extends SearchDelegate {
     }
 
     final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+    moviesProvider.getSuggestionsByQuery(query);
 
-    return FutureBuilder(
-      future: moviesProvider.searchMovie(query),
+    return StreamBuilder(
+      stream: moviesProvider.suggestionStream,
       builder: (_, AsyncSnapshot<List<Movie>> snapshot) {
         if (!snapshot.hasData) return _emptyContainer();
 
         final movies = snapshot.data!;
 
         return ListView.builder(
-          itemCount: movies.length,
-          itemBuilder: (_, int index) => _MovieItem(movie: movies[index]),
-        );
+            itemCount: movies.length,
+            itemBuilder: (_, int index) => _MovieItem(movies[index]));
       },
     );
   }
@@ -67,11 +68,12 @@ class MovieSearchDelegate extends SearchDelegate {
 
 class _MovieItem extends StatelessWidget {
   final Movie movie;
-  const _MovieItem({Key? key, required this.movie}) : super(key: key);
+
+  const _MovieItem(this.movie);
 
   @override
   Widget build(BuildContext context) {
-    movie.heroId = 'swiper-${movie.id}';
+    movie.heroId = 'search-${movie.id}';
 
     return ListTile(
       leading: Hero(

@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:peliculas/models/models.dart';
 import 'package:peliculas/providers/movies_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../models/models.dart';
-
 class CastingCards extends StatelessWidget {
   final int movieId;
-  const CastingCards({Key? key, required this.movieId}) : super(key: key);
+
+  const CastingCards(this.movieId, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final moviesProvider = Provider.of<MoviesProvider>(context);
+    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
 
     return FutureBuilder(
       future: moviesProvider.getMovieCast(movieId),
@@ -24,19 +23,16 @@ class CastingCards extends StatelessWidget {
           );
         }
 
-        final List<Cast> castResponse = snapshot.data!;
+        final List<Cast> cast = snapshot.data!;
 
         return Container(
           margin: const EdgeInsets.only(bottom: 30),
           width: double.infinity,
           height: 180,
-          //color: Colors.red,
           child: ListView.builder(
             itemCount: 10,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => _CastCard(
-              actor: castResponse[index],
-            ),
+            itemBuilder: (_, int index) => _CastCard(cast[index]),
           ),
         );
       },
@@ -47,15 +43,14 @@ class CastingCards extends StatelessWidget {
 class _CastCard extends StatelessWidget {
   final Cast actor;
 
-  const _CastCard({Key? key, required this.actor}) : super(key: key);
+  const _CastCard(this.actor);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      width: 120,
-      height: 120,
-      //color: Colors.amber,
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      width: 110,
+      height: 100,
       child: Column(
         children: [
           ClipRRect(
@@ -71,7 +66,7 @@ class _CastCard extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             actor.name,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
           )
