@@ -28,7 +28,7 @@ class SearchResponse {
             ? List<Movie>.from(json["results"].map((x) => Movie.fromMap(x)))
                 .toList()
             : [],
-        totalPages: json["total_pages"] ?? null,
-        totalResults: json["total_results"] ?? null,
+        totalPages: json["total_pages"],
+        totalResults: json["total_results"],
       );
 }
